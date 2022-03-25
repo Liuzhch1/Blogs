@@ -7,8 +7,12 @@
         "id": "2d0cdf61f8aeb1ee",
         "type": "leaf",
         "state": {
-          "type": "empty",
-          "state": {}
+          "type": "markdown",
+          "state": {
+            "file": "Ubuntu下交换Alt和Ctrl (适用于任何按键修改).md",
+            "mode": "preview",
+            "source": false
+          }
         }
       }
     ],
@@ -65,6 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Ubuntu下交换Alt和Ctrl (适用于任何按键修改).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -83,5 +88,7 @@
     "collapsed": true
   },
   "active": "2d0cdf61f8aeb1ee",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "Ubuntu下交换Alt和Ctrl (适用于任何按键修改).md"
+  ]
 }
