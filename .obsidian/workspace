@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Ubuntu下交换Alt和Ctrl (适用于任何按键修改).md",
+            "file": "LeetCode/76. Minimum Window Substring.md",
             "mode": "preview",
             "source": false
           }
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Ubuntu下交换Alt和Ctrl (适用于任何按键修改).md",
+                "file": "LeetCode/76. Minimum Window Substring.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -89,6 +89,7 @@
   },
   "active": "2d0cdf61f8aeb1ee",
   "lastOpenFiles": [
-    "Ubuntu下交换Alt和Ctrl (适用于任何按键修改).md"
+    "LeetCode/76. Minimum Window Substring.md",
+    "随笔/Ubuntu下交换Alt和Ctrl (适用于任何按键修改).md"
   ]
 }
