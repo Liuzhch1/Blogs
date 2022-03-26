@@ -4,11 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "2df35432aafa3658",
+        "id": "2d0cdf61f8aeb1ee",
         "type": "leaf",
         "state": {
-          "type": "empty",
-          "state": {}
+          "type": "markdown",
+          "state": {
+            "file": "LeetCode/76. Minimum Window Substring.md",
+            "mode": "source",
+            "source": false
+          }
         }
       }
     ],
@@ -49,8 +53,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 231,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "646ebc33379ae857",
@@ -66,6 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "LeetCode/76. Minimum Window Substring.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -83,7 +87,7 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "2df35432aafa3658",
+  "active": "2d0cdf61f8aeb1ee",
   "lastOpenFiles": [
     "LeetCode/76. Minimum Window Substring.md",
     "随笔/Ubuntu下交换Alt和Ctrl (适用于任何按键修改).md"
