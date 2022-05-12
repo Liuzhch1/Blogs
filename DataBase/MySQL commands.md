@@ -99,3 +99,31 @@ The table name is also can be qualified.
 SELECT products.prod_name
 FROM mydatabase.products;
 ```
+
+## Sort and Retrieve Data
+**Objective:** Using `ORDER BY` clause of the `SELECT` command to sort the retrieved data as needed.
+
+### Sort data
+To sort the data retrieved by `SELECT`, use `ORDER BY` clause. `ORDER BY` clause takes one or more columns' name and sorts the output accordingly.
+```SQL
+SELECT prod_name
+FROM products
+ORDER BY prod_name;
+```
+**Meaning:** The retrieved data will order by `prod_name`.
+
+> We can also use non-retrieved columns to sort data, it's totally legal:
+```SQL
+SELECT prod_name
+FROM products
+ORDER BY price;
+```
+
+### Sort by multiple columns
+Sort by multiple columns, for example: order by last name first, then order by first name. To sort multiple columns, just specify column names separated name by commas.
+```SQL
+SELECT prod_id, prod_price, prod_name
+FROM products
+ORDER BY prod_price, prod_name;
+```
+**Meaning:** Order by `prod_price` and `prod_name`. First order by `prod_name`, then order by `prod_name`. So only to order `prod_name` if there are multiple product has the same price. If the price of all product differs from each other, it don't need to order by `prod_name`(or it's in order already).
