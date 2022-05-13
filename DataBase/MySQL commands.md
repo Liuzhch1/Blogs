@@ -127,3 +127,31 @@ FROM products
 ORDER BY prod_price, prod_name;
 ```
 **Meaning:** Order by `prod_price` and `prod_name`. First order by `prod_name`, then order by `prod_name`. So only to order `prod_name` if there are multiple product has the same price. If the price of all product differs from each other, it don't need to order by `prod_name`(or it's in order already).
+
+### Specify sort direction
+To sort the data in descending order, use `DESC` keyword.
+```SQL
+SELECT prod_id, prod_price, prod_name
+FROM products
+ORDER BY prod_price DESC;
+```
+**Meaning:** Sort items in `prod_price` descending order.
+
+> `DESC` only applies to columns names that precede it. So we can put those names we want to sort in ascending order after `DESC`: `ORDER BY prod_name DESC, prod_name;`
+
+> If want to descending multiple columns, must use `DESC` for every one of them: `ORDER BY prod_name DESC, prod_name DESC;`
+
+> Usually, MySQL sorting ignores letter case. E.g. 'A'='a' in sorting.
+
+#### use case
+Using `ORDER BY` and `LIMIT` operation to find the most expensive product:
+```SQL
+SELECT prod_name
+FROM products
+ORDER BY prod_price DESC
+LIMIT 1;
+```
+**Meaning:** Sort product in price descending order, and only show one item. So that item is the most expensive one.
+
+> Must put `ORDER BY` after `FROM`, and put `LIMIT` after `ORDER BY`.
+
