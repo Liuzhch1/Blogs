@@ -155,3 +155,25 @@ LIMIT 1;
 
 > Must put `ORDER BY` after `FROM`, and put `LIMIT` after `ORDER BY`.
 
+## Filter Data
+**Objective:** Use `WHERE` clause of the `SELECT` command to specify search criteria.
+
+### Using WHERE clause
+Usually, we just need to retrieve part of data which meet certain condition. To specify search criteria, use `WHERE` clause.
+```SQL
+SELECT prod_name
+FROM product
+WHERE prod_price=2.5;
+```
+**Meaning:** Only retrieve items whose price is 2.5.
+
+> Must place `ORDER BY` after `WHERE`.
+
+### WHERE clause operator
+There are various operator for filter data:
+`=`, `!=`or`<>`, `<`, `<=`, `>`, `>=`, `BETWEEN ... AND ...`
+
+Use `NULL` to filter no value: `WHERE prod_name IS NULL`.
+
+> Filter will ignore `NULL` if the criteria is not `IS NULL`. Because database don't know if `NULL` data fit, so just ignore them.
+
