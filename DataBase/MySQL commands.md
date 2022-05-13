@@ -177,3 +177,24 @@ Use `NULL` to filter no value: `WHERE prod_name IS NULL`.
 
 > Filter will ignore `NULL` if the criteria is not `IS NULL`. Because database don't know if `NULL` data fit, so just ignore them.
 
+## Data Filtering
+High level filter criteria with `WHERE`.  And `NOT` and `IN`.
+
+### Combined WHERE clause
+Use `AND` and `OR` operator to juxtapose multiple filter conditions.
+```SQL
+...
+WHERE vend_id=100 AND prod_price<=10;
+```
+
+Use `IN` for a filter range:
+```SQL
+...
+WHERE prod_price IN (10,20);
+```
+
+Use `NOT` to negate any condition following it.
+```SQL
+...
+WHERE prod_price NOT IN (20,100);
+```
