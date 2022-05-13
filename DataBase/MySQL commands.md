@@ -198,3 +198,25 @@ Use `NOT` to negate any condition following it.
 ...
 WHERE prod_price NOT IN (20,100);
 ```
+
+## Filter With Wildcards
+Use `LIKE` operation to search.
+> ***wildcard:*** A special character used to match a portion of a value
+> ***search pattern:*** Search criteria consist of literals, wildcards or their combination.
+
+To use wildcard, must use `LIKE` operation.
+### Percent sign(`%`) wildcard
+`%` indicate any character appear any times(0,1 or any more time).
+```SQL
+...
+WHERE prod_name LIKE "Jet%";
+```
+Filter any string start with `Jet`.
+> Search is case sensitive. `"Jet%"` doesn't match `jetbrian`.
+
+> `%` don't match `NULL`.
+
+### Underline(`_`) wildcard
+Similar to `%`, but `_` only match exactly one character.
+
+> Wildcard is time time-consuming. Use them only when do needed.
