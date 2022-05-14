@@ -220,3 +220,205 @@ Filter any string start with `Jet`.
 Similar to `%`, but `_` only match exactly one character.
 
 > Wildcard is time time-consuming. Use them only when do needed.
+
+## Search With Regular Expressions
+**Objective:** Using `WHERE` with regular expressions to satisfy complex filter.
+
+### Using MySQL regular expressions
+> MySQL only support a small subset of regular expression.
+
+#### basic regular expression
+```SQL
+...
+WHERE prod_name REGEXP '.000'
+```
+**Meaning:** `.` match any character. `'.000'` can match `1000`, `2000`, `a000` etc.
+
+> **Important Difference:**
+> `LIKE` match the whole line. If the matched text appears **in** the column value, `LIKE` won't return it.
+> `REGEXP` match anything in the column value.
+
+> **MySQL regular expression ignore case**. To be case sensitive, use `BINARY` keyword: `WHERE prod_name REGEXP BINARY 'JetBrain'`.
+
+#### OR matching
+Search one of two regular expression strings, using `|`.
+```SQL
+...
+WHERE prod_name REGEXP '1000|2000';
+```
+**Meaning:** It will match `'1000'` or `'2000'`. `|` is functionally similar to using `OR` statement.
+
+#### match several characters
+Using `[...]` to match those character want to match.
+```SQL
+...
+WHERE prod_name REGEXP '[123]Ton';
+```
+**Meaning:** It will match `1Ton`, `2Ton` and `3Ton`.
+
+> Using `^` to negate anything after it: `'[^123]'` won't match `1` or `2` or `3`.
+
+#### matching range
+Using `-` to define a range.
+```SQL
+...
+WHERE prod_name REGEXP '[1-5]Ton';
+```
+**Meaning:** `'[1-5]'` will match number 1 to 5.
+
+> [a-z] match all letters.
+
+#### match special characters
+Using `\\` to match any special characters like `[`, `.`, `-` etc.
+```SQL
+WHERE vend_name REGEXP '\\.';
+```
+**Meaning:** Match column value which contains `.` This `\\` expression is called *escaping*.
+
+Other special meaning escaping:
+`\\n`: line feed
+`\\r`: enter
+`\\t`: tab
+`\\f`: page change
+`\\v`: longitudinal tab
+
+#### match character class
+`[:alnum:]`: any letter and number, equal to `[a-zA-Z0-9]`.
+`[:alpha:]`: any letter, equal to `[a-zA-Z]`.
+`[:blank:]`: space and tab.
+`[:digit:]`: any number, equal to `[0-9]`.
+`[:lower:]`: any lower case letters, equal to `[a-z]`.
+`[:upper:]`: any upper case letters, equal to `[A-Z]`.
+`[:space:]`: any white space character including space, equal to `[\\f\\n\\r\\t\\v]`.
+`[:xdigit:]`: any hex number, equal to `[a-fA-F0-9]`.
+
+#### match multiple instance
+Those regular expression above only match a single occurrence. If want to match some string specific times, use following repeat match character.
+`*`: 0 or more
+`+`: 1 or multiple
+`?`: 0 or 1
+`{n}`: n times
+`{n,}`: not less than n times
+`{n,m}` n<times<m. Where m<=255.
+```SQL
+...
+WHERE prod_name REGEXP '[[:digit:]]{4}';
+```
+**Meaning:** Match any digit 4 times. `[:digit:]` is a set. So we need to put it in a `[]` and let `{4}` match it 4 times.
+
+#### locator
+Those regular expression above matching at any position in the string. To match specified location string. Use following locator.
+`^`: start of text.
+`$`: end of text.
+`[[:<:]]`: start of a word.
+`[[:>:]]`: end of a word
+```SQL
+...
+WHERE prod_name REGEXP '^[0-9]';
+```
+**Meaning:** Match any column value that start with a digit.
+
+> Test your regular expression: `SELECT 'hello' REGEXP '[0-9]'`, which means match digit in string 'hello', it will return false.
+> This `REGEXP` test only return 1 for success and 0 for failed.
+
+## Create Calculated Field
+**Objective:** Return the field in specified format. Not stored in the database.
+
+### Concatenate field
+Use `Concat()` to concatenate multiple column.
+```SQL
+SELECT Concat(vend_name, '(', vend_country, ')')
+...
+```
+**Meaning:** Concatenate `vend_name`, '(', `vend_country` and ')' together.
+It will return something like: `Apple(USA)`, `XiaoMi(China)` etc.
+
+#### remove space(` `)
+Use `RTrim()` to remove space` ` at the right side of column value. `LTrim()` to remove space` ` at the left side of column value.
+```SQL
+SELECT Concat(RTrim(vend_name), '(', RTrim(vend_country), ')')
+...
+```
+**Meaning:** Remove right ` ` of `vend_name` and `vend_country`.
+
+#### use alias
+Use `AS` to given field a new name.
+```SQL
+SELECT Concat(.......) AS vend_title
+...
+```
+**Meaning:** After `Concat` operation, `AS` will name it as `vend_title`.
+
+> Use `SELECT` to test:
+> `SELECT 3*2` return 6.
+> `SELECT Trim(' bag ')` return `'bag'`. 
+> `SELECT Now()` return current date and time.
+
+## Data Processing Functions
+> Functions in SQL is not quilt portable. Which mean some function works in MySQL won't work on other `DBMS`. So write comments for function you used.
+
+### Text processing function
+Use `Upper()` function to turn all text to upper case.
+```SQL
+SELECT Upper(vend_name) AS vend_name_Upper
+...
+```
+**Meaning:** Select vend_name and turn all vend_name column value to upper case.
+
+#### useful text processing func
+`Left()`: return the character to the left of string.
+`Right()`: return the character to the right of string.
+`Length()`: return the length of a string.
+`Lower()`: turn to lower case.
+`Soundex()`: return SOUNDEX value.
+> SOUNDEX value means return any string that sounds alike. Like `Lie` and `Lee`.
+
+```SQL
+...
+WHERE Soundex(cust_contact) = Soundex('Lie');
+```
+**Meaning:** Will return `Lee` because `Lee` and `Lie` sound alike.
+
+### Date and time handler
+`AddDate()`: Add a date: day or week, etc.
+`AddTime(）`: Add a time: hour or min, etc.
+`CurDate()`: Return current date.
+`CurTime()`: Return current time.
+`Date()`: Return date part of dateAndTime.
+`DateDiff()`: Difference between two date.
+`Date_Add()`: Any add.
+`Date_Format()`: Formated date.
+`Day()`: Day part of a date.
+`Dayofweek() Hour()`: Corresponding day of the week.
+`Minute()`: Minute part of the time.
+`Month()`: Month part of the date.
+`Now()`: Date and time.
+`Second()`: Second part of time.
+`Time()`: Time part of date.
+`Year()`: Year part of date.
+
+> **Important:** Date format must be `yyyy-mm-dd`.
+
+```SQL
+...
+WHERE Date(order_data) = '2022-5-14';
+```
+
+```SQL
+WHERE Date(order_date) BETWEEN '2022-02-01' AND '2022-02-28';
+```
+
+```SQL
+WHERE Year(order_date)=2022 AND Month(order_date)=2;
+```
+
+### Numerical processing func
+`Abs()`
+`Cos()`
+`Exp()`
+`Mod()`
+`Pi()`
+`Rand()`
+`Sin()`
+`Sqrt()`
+`Tan()`
