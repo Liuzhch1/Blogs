@@ -422,3 +422,70 @@ WHERE Year(order_date)=2022 AND Month(order_date)=2;
 `Sin()`
 `Sqrt()`
 `Tan()`
+
+## Summary Data
+MySQL can summary data to retrieve them. Like:
+- Number of rows in the table (or number of rows that meet a condition)
+- Sum of the row groups in the table.
+- Find max, min, average, etc.
+Those operation above need to summary data in the table. There are five *aggregate function* for summary. They are:
+`AVG()`: return average value of a column
+`COUNT()`: return the number of rows of a column
+`MAX()`: return the max value of a column
+`MIN()`: return the min value of a column
+`SUM()`: return the sum of a column
+
+#### AVG()
+```SQL
+SELECT AVG(prod_price) AS avg_price
+...
+WHERE vend_name = 'Apple';
+```
+**Meaning:** Return the value of average of `prod_price` from `Apple`.
+
+> `AVG()` ignore NULL value line.
+
+#### COUNT()
+```SQL
+SELECT COUNT(cust_email) AS num_cust
+...
+```
+**Meaning:** Return the rows which `cust_email` is not NULL.
+
+> `COUNT(*)` count the rows even which value is NULL.
+> `COUNT(column)` count valued rows, ignore NULL value.
+
+#### SUM()
+```SQL
+SELECT SUM(item_price*quantity) AS total_price
+FROM orderitems
+WHERE order_num=20005;
+```
+**Meaning:** Return the sum of prices of all items in the order.
+
+> `SUM()` ignore NULL value.
+
+### Summary distinct data
+Use `DISTINCT` to summary distinct data.
+```SQL
+SELECT AVG(DISTINCT prod_price) AS avg_prive
+...
+```
+**Meaning:** Return the average price of price different product.
+
+## Grouping Data
+Using `GROUP BY` and `HAVING` clause to group a subset of a table.
+
+### Create group
+```SQL
+SELECT vend_id, COUNT(*) AS num_prods
+FROM products
+GROUP BY vend_id;
+```
+**Meaning:** `GROUP BY` means calculate `num_prods` for each different `vend_id`.
+
+> The column in after `GROUP BY` must be a column. It can not be a function result: `GROUP BY SUM(*)` is invalid. And can not be alias.
+
+> `GROUP BY` must appear after `WHERE` clause, before `ORDER BY` clause.
+
+### Filter grouping
