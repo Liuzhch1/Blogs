@@ -489,3 +489,98 @@ GROUP BY vend_id;
 > `GROUP BY` must appear after `WHERE` clause, before `ORDER BY` clause.
 
 ### Filter grouping
+```SQL
+...
+GROUP BY cust_id
+HAVING COUNT(*)>=2;
+```
+**Meaning:** `HAVING` filters those with `COUNT(*)>2`.
+
+> `HAVING` and `WHERE` difference: `WHERE` filters before data grouping. `HAVING` filters after grouping. So `WHERE` excluded rows are not included in the grouping. This may change the calculated values. Affecting  the grouping filtered based on `HAVING`. Example as follows:
+
+```SQL
+...
+SELECT vend_id, COUNT(*) AS num_prods
+FROM products
+WHERE prod_price >= 10
+GROUP BY vend_id
+HAVING COUNT(*) >= 2;
+```
+**Meaning:** `WHERE` filter those `prod_price>=10` and **then** group by `vend_id`. The `HAVING` clause filters group count >=2. This means that if the prices of three products of a vendor are 8, 9 and 10. Product of price 8 and 9 will be filtered out by `WHERE`. Then there is only one line left after `GROUP`, which will be filtered out by `HAVING`. Because `HAVING` means the group's rows number must >=2.
+
+### SELECT's clause order
+```SQL
+SELECT
+FROM
+WHERE
+GROUP BY
+HAVING
+ORDER BY
+LIMIT
+```
+
+## Use Subquery
+Subquery is the queries nested in other queries.
+```SQL
+SELECT DISTINCT cust_id
+FROM orders
+WHERE order_num IN (SELECT order_num
+					FROM orderitems
+					WHERE prod_id='TNT2');
+```
+**Meaning:** Always look at the contents in parentheses first. It means choose `order_num` where the `prod_id` is "TNT2". Using this query's result, choose `cust_id` from `orders` table where the `order_num` in that query.
+
+### Use subqueries as calculated fields
+In addition to the nested queries above. Another way to use subqueries is to create calculated fields.
+
+Now we need to display the total number of orders for each customer in the `customers` table. The order and corresponding customer ID stored in the `orders` table.
+```SQL
+SELECT cust_name,
+	   cust_state,
+	   (SELECT COUNT(*)
+	    FROM orders
+	    WHERE orders.cust_id=customers.cust_id) AS orders
+FROM customers
+ORDER BY cust_name;
+```
+**Meaning:** The `orders` is a calculated fields, the content inside parentheses means select rows from `orders` table where the `cust_id` matches `cust_id` in the `customers` table. Which uses [[#Fully qualified table names]].
+
+## Join Table
+> **foreign key:** A column in a table, which contains the primary key value of another table and defines the relationship between two table.
+
+### Create join
+Just specify all the table to join and how they are related.
+```SQL
+SELECT vend_name, prod_name, prod_price
+FROM vendors, products
+WHERE vendors.vend_id=products.vend_id
+ORDER BY vend_name, prod_name;
+```
+**Meaning:** It's markable that `vend_name` and `prod_name` are not in the same table. `FROM` gives two table. They are the table to join. Using `WHERE` clause to join them. The `WHERE` clause indicates MySQL matching `vend_id` in table `vendors` and `vend_id` in table `products`.
+
+#### `WHERE` clause importance
+The relations between tables are constructed in operations. There doesn't exist anything instruct MySQL how to join tables, unless you command it.
+Without `WHERE` clause in above example, MySQL will pair each row in first table with each row in  the second table, which is a **cartesian product**.
+
+#### inner join
+The join above is called `equijoin` which based on equality test between two tables. There is another way to specify.
+```SQL
+SELECT vend_name, prod_name, prod_price
+FROM vendors INNER JOIN products
+ON vendors.vend_id=products.vend_id;
+```
+**Meaning:** The join condition is given by `ON` clause. The condition passed to `ON` is equal to `WHERE`.
+
+> `WHERE` or `INNER JOIN...ON`?
+> Prefer `INNER JOIN`.
+
+#### join multiple tables
+There is no limit of number of tables can be joined.
+```SQL
+...
+FROM orderitems, products, vendors
+WHERE products.vend_id=vendors.vend_id
+AND orderitems.prod_id=products.prod_id
+AND order_num=2004;
+```
+**Meaning:** Using `AND` in `WHERE` to join multiple tables.
