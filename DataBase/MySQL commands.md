@@ -584,3 +584,30 @@ AND orderitems.prod_id=products.prod_id
 AND order_num=2004;
 ```
 **Meaning:** Using `AND` in `WHERE` to join multiple tables.
+
+## Create Advanced Join
+### Use table alias
+There are two reasons for SQL allows aliasing of table names.
+- Shorten SQL statements
+- Allowed to use the same table multiple times in a single select statement.
+```SQL
+SELECT cust_name, cust_contact
+FROM customers AS cst, orders AS od, orderitems AS odi
+WHERE cst.cust_id=od.cust_id
+	AND odi.order_num=od.order_num
+	AND prod_id='TNT2';
+```
+**Meaning:** Shorten `customers` as `cst`. Ellipsis.
+
+### Use different types of joins
+#### self join
+Find every product from a vendor which product a specific product:
+```SQL
+SELECT p1.prod_id, p1.prod_name
+FROM products AS p1, products AS p2
+WHERE p1.vend_id=p2.vend_id
+	AND p2.prod_id='TNT2';
+```
+**Meaning:** The two table required in this query are actually the same table. Do a self join to choose data we need. Use alias so that SQL know the difference between the two table.
+
+#### natural join
