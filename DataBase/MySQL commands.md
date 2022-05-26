@@ -1,4 +1,4 @@
-```sql
+```MySQL
 SELECT
 	name, id,
 	AVG(age) as avg_name
@@ -29,7 +29,7 @@ LIMIT 2;
 
 Using `SELECT` should give two piece of information: 1. what you want to choose. 2. where to choose from.
 ### Retrieve single column
-```SQL
+```MySQL
 SELECT prod_name
 FROM products;
 ```
@@ -39,7 +39,7 @@ FROM products;
 
 ### Retrieve multiple columns
 Column names must be separated by commas. **Attention**: there is no comma after last column name.
-```SQL
+```MySQL
 SELECT prod_id, prod_name, prod_price
 FROM products;
 ```
@@ -47,7 +47,7 @@ FROM products;
 
 ### Retrieve all columns
 In addition to specify the desired columns. We can retrieve all columns without listing them one by one. Using the asterisk`*` to get all columns.
-```SQL
+```MySQL
 SELECT *
 FROM products;
 ```
@@ -57,7 +57,7 @@ FROM products;
 
 ### Retrieve different rows
 `SELECT` will return all matching rows. Using `DISTINCT` to return only rows of different value.
-```SQL
+```MySQL
 SELECT DISTINC vend_id
 FROM products;
 ```
@@ -68,14 +68,14 @@ FROM products;
 
 ### Limit results
 Limit the number of result lines using `LIMIT` sentence.
-```SQL
+```MySQL
 SELECT prod_name
 FROM products
 LIMIT 5;
 ```
 **Meaning:** `LIMIT 5` means the returns no more than 5 rows.
 
-```SQL
+```MySQL
 SELECT prod_name
 FROM products
 LIMIT 5,6;
@@ -88,14 +88,14 @@ LIMIT 5,6;
 
 ### Fully qualified table names
 We used only column name to refer them above. We can also use fully qualified names to refer them, which means use table name and column at the same time.
-```SQL
+```MySQL
 SELECT products.prod_name
 FROM products;
 ```
 **Meaning:** Equal to [[MySQL commands#Retrieve single column|Retrieve single column]]. A fully qualified column name is specified here.
 
 The table name is also can be qualified.
-```SQL
+```MySQL
 SELECT products.prod_name
 FROM mydatabase.products;
 ```
@@ -105,7 +105,7 @@ FROM mydatabase.products;
 
 ### Sort data
 To sort the data retrieved by `SELECT`, use `ORDER BY` clause. `ORDER BY` clause takes one or more columns' name and sorts the output accordingly.
-```SQL
+```MySQL
 SELECT prod_name
 FROM products
 ORDER BY prod_name;
@@ -113,7 +113,7 @@ ORDER BY prod_name;
 **Meaning:** The retrieved data will order by `prod_name`.
 
 > We can also use non-retrieved columns to sort data, it's totally legal:
-```SQL
+```MySQL
 SELECT prod_name
 FROM products
 ORDER BY price;
@@ -121,7 +121,7 @@ ORDER BY price;
 
 ### Sort by multiple columns
 Sort by multiple columns, for example: order by last name first, then order by first name. To sort multiple columns, just specify column names separated name by commas.
-```SQL
+```MySQL
 SELECT prod_id, prod_price, prod_name
 FROM products
 ORDER BY prod_price, prod_name;
@@ -130,7 +130,7 @@ ORDER BY prod_price, prod_name;
 
 ### Specify sort direction
 To sort the data in descending order, use `DESC` keyword.
-```SQL
+```MySQL
 SELECT prod_id, prod_price, prod_name
 FROM products
 ORDER BY prod_price DESC;
@@ -145,7 +145,7 @@ ORDER BY prod_price DESC;
 
 #### use case
 Using `ORDER BY` and `LIMIT` operation to find the most expensive product:
-```SQL
+```MySQL
 SELECT prod_name
 FROM products
 ORDER BY prod_price DESC
@@ -160,7 +160,7 @@ LIMIT 1;
 
 ### Using WHERE clause
 Usually, we just need to retrieve part of data which meet certain condition. To specify search criteria, use `WHERE` clause.
-```SQL
+```MySQL
 SELECT prod_name
 FROM product
 WHERE prod_price=2.5;
@@ -182,19 +182,19 @@ High level filter criteria with `WHERE`.  And `NOT` and `IN`.
 
 ### Combined WHERE clause
 Use `AND` and `OR` operator to juxtapose multiple filter conditions.
-```SQL
+```MySQL
 ...
 WHERE vend_id=100 AND prod_price<=10;
 ```
 
 Use `IN` for a filter range:
-```SQL
+```MySQL
 ...
 WHERE prod_price IN (10,20);
 ```
 
 Use `NOT` to negate any condition following it.
-```SQL
+```MySQL
 ...
 WHERE prod_price NOT IN (20,100);
 ```
@@ -207,7 +207,7 @@ Use `LIKE` operation to search.
 To use wildcard, must use `LIKE` operation.
 ### Percent sign(`%`) wildcard
 `%` indicate any character appear any times(0,1 or any more time).
-```SQL
+```MySQL
 ...
 WHERE prod_name LIKE "Jet%";
 ```
@@ -228,7 +228,7 @@ Similar to `%`, but `_` only match exactly one character.
 > MySQL only support a small subset of regular expression.
 
 #### basic regular expression
-```SQL
+```MySQL
 ...
 WHERE prod_name REGEXP '.000'
 ```
@@ -242,7 +242,7 @@ WHERE prod_name REGEXP '.000'
 
 #### OR matching
 Search one of two regular expression strings, using `|`.
-```SQL
+```MySQL
 ...
 WHERE prod_name REGEXP '1000|2000';
 ```
@@ -250,7 +250,7 @@ WHERE prod_name REGEXP '1000|2000';
 
 #### match several characters
 Using `[...]` to match those character want to match.
-```SQL
+```MySQL
 ...
 WHERE prod_name REGEXP '[123]Ton';
 ```
@@ -260,7 +260,7 @@ WHERE prod_name REGEXP '[123]Ton';
 
 #### matching range
 Using `-` to define a range.
-```SQL
+```MySQL
 ...
 WHERE prod_name REGEXP '[1-5]Ton';
 ```
@@ -270,7 +270,7 @@ WHERE prod_name REGEXP '[1-5]Ton';
 
 #### match special characters
 Using `\\` to match any special characters like `[`, `.`, `-` etc.
-```SQL
+```MySQL
 WHERE vend_name REGEXP '\\.';
 ```
 **Meaning:** Match column value which contains `.` This `\\` expression is called *escaping*.
@@ -300,7 +300,7 @@ Those regular expression above only match a single occurrence. If want to match 
 `{n}`: n times
 `{n,}`: not less than n times
 `{n,m}` n<times<m. Where m<=255.
-```SQL
+```MySQL
 ...
 WHERE prod_name REGEXP '[[:digit:]]{4}';
 ```
@@ -312,7 +312,7 @@ Those regular expression above matching at any position in the string. To match 
 `$`: end of text.
 `[[:<:]]`: start of a word.
 `[[:>:]]`: end of a word
-```SQL
+```MySQL
 ...
 WHERE prod_name REGEXP '^[0-9]';
 ```
@@ -326,7 +326,7 @@ WHERE prod_name REGEXP '^[0-9]';
 
 ### Concatenate field
 Use `Concat()` to concatenate multiple column.
-```SQL
+```MySQL
 SELECT Concat(vend_name, '(', vend_country, ')')
 ...
 ```
@@ -335,7 +335,7 @@ It will return something like: `Apple(USA)`, `XiaoMi(China)` etc.
 
 #### remove space(` `)
 Use `RTrim()` to remove space` ` at the right side of column value. `LTrim()` to remove space` ` at the left side of column value.
-```SQL
+```MySQL
 SELECT Concat(RTrim(vend_name), '(', RTrim(vend_country), ')')
 ...
 ```
@@ -343,7 +343,7 @@ SELECT Concat(RTrim(vend_name), '(', RTrim(vend_country), ')')
 
 #### use alias
 Use `AS` to given field a new name.
-```SQL
+```MySQL
 SELECT Concat(.......) AS vend_title
 ...
 ```
@@ -359,7 +359,7 @@ SELECT Concat(.......) AS vend_title
 
 ### Text processing function
 Use `Upper()` function to turn all text to upper case.
-```SQL
+```MySQL
 SELECT Upper(vend_name) AS vend_name_Upper
 ...
 ```
@@ -373,7 +373,7 @@ SELECT Upper(vend_name) AS vend_name_Upper
 `Soundex()`: return SOUNDEX value.
 > SOUNDEX value means return any string that sounds alike. Like `Lie` and `Lee`.
 
-```SQL
+```MySQL
 ...
 WHERE Soundex(cust_contact) = Soundex('Lie');
 ```
@@ -399,16 +399,16 @@ WHERE Soundex(cust_contact) = Soundex('Lie');
 
 > **Important:** Date format must be `yyyy-mm-dd`.
 
-```SQL
+```MySQL
 ...
 WHERE Date(order_data) = '2022-5-14';
 ```
 
-```SQL
+```MySQL
 WHERE Date(order_date) BETWEEN '2022-02-01' AND '2022-02-28';
 ```
 
-```SQL
+```MySQL
 WHERE Year(order_date)=2022 AND Month(order_date)=2;
 ```
 
@@ -436,7 +436,7 @@ Those operation above need to summary data in the table. There are five *aggrega
 `SUM()`: return the sum of a column
 
 #### AVG()
-```SQL
+```MySQL
 SELECT AVG(prod_price) AS avg_price
 ...
 WHERE vend_name = 'Apple';
@@ -446,7 +446,7 @@ WHERE vend_name = 'Apple';
 > `AVG()` ignore NULL value line.
 
 #### COUNT()
-```SQL
+```MySQL
 SELECT COUNT(cust_email) AS num_cust
 ...
 ```
@@ -456,7 +456,7 @@ SELECT COUNT(cust_email) AS num_cust
 > `COUNT(column)` count valued rows, ignore NULL value.
 
 #### SUM()
-```SQL
+```MySQL
 SELECT SUM(item_price*quantity) AS total_price
 FROM orderitems
 WHERE order_num=20005;
@@ -467,7 +467,7 @@ WHERE order_num=20005;
 
 ### Summary distinct data
 Use `DISTINCT` to summary distinct data.
-```SQL
+```MySQL
 SELECT AVG(DISTINCT prod_price) AS avg_prive
 ...
 ```
@@ -477,7 +477,7 @@ SELECT AVG(DISTINCT prod_price) AS avg_prive
 Using `GROUP BY` and `HAVING` clause to group a subset of a table.
 
 ### Create group
-```SQL
+```MySQL
 SELECT vend_id, COUNT(*) AS num_prods
 FROM products
 GROUP BY vend_id;
@@ -489,7 +489,7 @@ GROUP BY vend_id;
 > `GROUP BY` must appear after `WHERE` clause, before `ORDER BY` clause.
 
 ### Filter grouping
-```SQL
+```MySQL
 ...
 GROUP BY cust_id
 HAVING COUNT(*)>=2;
@@ -498,7 +498,7 @@ HAVING COUNT(*)>=2;
 
 > `HAVING` and `WHERE` difference: `WHERE` filters before data grouping. `HAVING` filters after grouping. So `WHERE` excluded rows are not included in the grouping. This may change the calculated values. Affecting  the grouping filtered based on `HAVING`. Example as follows:
 
-```SQL
+```MySQL
 ...
 SELECT vend_id, COUNT(*) AS num_prods
 FROM products
@@ -509,7 +509,7 @@ HAVING COUNT(*) >= 2;
 **Meaning:** `WHERE` filter those `prod_price>=10` and **then** group by `vend_id`. The `HAVING` clause filters group count >=2. This means that if the prices of three products of a vendor are 8, 9 and 10. Product of price 8 and 9 will be filtered out by `WHERE`. Then there is only one line left after `GROUP`, which will be filtered out by `HAVING`. Because `HAVING` means the group's rows number must >=2.
 
 ### SELECT's clause order
-```SQL
+```MySQL
 SELECT
 FROM
 WHERE
@@ -521,7 +521,7 @@ LIMIT
 
 ## Use Subquery
 Subquery is the queries nested in other queries.
-```SQL
+```MySQL
 SELECT DISTINCT cust_id
 FROM orders
 WHERE order_num IN (SELECT order_num
@@ -534,7 +534,7 @@ WHERE order_num IN (SELECT order_num
 In addition to the nested queries above. Another way to use subqueries is to create calculated fields.
 
 Now we need to display the total number of orders for each customer in the `customers` table. The order and corresponding customer ID stored in the `orders` table.
-```SQL
+```MySQL
 SELECT cust_name,
 	   cust_state,
 	   (SELECT COUNT(*)
@@ -550,7 +550,7 @@ ORDER BY cust_name;
 
 ### Create join
 Just specify all the table to join and how they are related.
-```SQL
+```MySQL
 SELECT vend_name, prod_name, prod_price
 FROM vendors, products
 WHERE vendors.vend_id=products.vend_id
@@ -564,7 +564,7 @@ Without `WHERE` clause in above example, MySQL will pair each row in first table
 
 #### inner join
 The join above is called `equijoin` which based on equality test between two tables. There is another way to specify.
-```SQL
+```MySQL
 SELECT vend_name, prod_name, prod_price
 FROM vendors INNER JOIN products
 ON vendors.vend_id=products.vend_id;
@@ -572,11 +572,11 @@ ON vendors.vend_id=products.vend_id;
 **Meaning:** The join condition is given by `ON` clause. The condition passed to `ON` is equal to `WHERE`.
 
 > `WHERE` or `INNER JOIN...ON`?
-> Prefer `INNER JOIN`.
+> Prefer `INNER JOIN...ON`.
 
 #### join multiple tables
 There is no limit of number of tables can be joined.
-```SQL
+```MySQL
 ...
 FROM orderitems, products, vendors
 WHERE products.vend_id=vendors.vend_id
@@ -590,7 +590,7 @@ AND order_num=2004;
 There are two reasons for SQL allows aliasing of table names.
 - Shorten SQL statements
 - Allowed to use the same table multiple times in a single select statement.
-```SQL
+```MySQL
 SELECT cust_name, cust_contact
 FROM customers AS cst, orders AS od, orderitems AS odi
 WHERE cst.cust_id=od.cust_id
@@ -602,7 +602,7 @@ WHERE cst.cust_id=od.cust_id
 ### Use different types of joins
 #### self join
 Find every product from a vendor which product a specific product:
-```SQL
+```MySQL
 SELECT p1.prod_id, p1.prod_name
 FROM products AS p1, products AS p2
 WHERE p1.vend_id=p2.vend_id
@@ -611,3 +611,37 @@ WHERE p1.vend_id=p2.vend_id
 **Meaning:** The two table required in this query are actually the same table. Do a self join to choose data we need. Use alias so that SQL know the difference between the two table.
 
 #### natural join
+Whenever we join tables, as least one column should appear in more than one table. The [[#inner join]] return all the data, so it the same column may appear multiple times. `natural join` excludes multiple occurrences, so that each column returns only once.
+`natural join` should be done by ourselves.
+```MySQL
+SELECT c.*, o.order_num, o.order_date, oi.prod_id
+FROM customers AS c, orders AS o, orderitems AS oi
+WHERE c.cust_id=o.cust_id
+	AND oi.order_num=o.order_num
+	AND prod_id='FB';
+```
+**Meaning:** Only select different column from different tables.
+
+#### outer join
+Sometimes we want to associate two tables, if some rows in table one is not in table two, but we want to associate it. How to implement this? Likes following situation.
+- Count the number of orders placed by each customer, including those that have not yet placed orders.
+In the situation above, some customers may no appear in the customers table, but we want to includes it in the joined table.
+```MySQL
+SELECT customers.cust_id, orders.order_num
+FROM customers LEFT OUTER JOIN orders
+	ON customers.cust_id=orders.cust_id;
+```
+**Meaning:** `LEFT` means the joined table will include all rows in the left table. `RIGHT` will include the right tables' rows.
+
+### Use joins with aggregation functions
+```MySQL
+SELECT customers.cust_name,
+	   customers.cust_id,
+	   COUNT(orders.order_num) AS num_ord
+FROM customers LEFT OUTER JOIN orders
+	ON customers.cust_id=orders.cust_id
+GROUP BY customers.cust_id;
+```
+**Meaning:** Using left outer join to connect two tables and then group the rows by customers, count each customers `order_num` as `num_ord`.
+
+## Combined Query
