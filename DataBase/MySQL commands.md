@@ -645,3 +645,21 @@ GROUP BY customers.cust_id;
 **Meaning:** Using left outer join to connect two tables and then group the rows by customers, count each customers `order_num` as `num_ord`.
 
 ## Combined Query
+We can use `UNION` to execute multiple queries(`SELECT`), and return result as a single query result.
+```MySQL
+SELECT vend_id, prod_id, prod_price
+FROM products
+WHERE prod_price <=5
+UNION
+SELECT vend_id, prod_id, prod_price
+FROM products
+WHERE vend_id IN (1001,1002);
+```
+**Meaning:** The first three lines choose the rows where `prod_price<=5` and the last three lines choose the rows where `vend_id` is 1001 or 1002. Then `UNION` operator union the results of two queries(Duplicate lines appear only once).
+
+### Rules of UNION
+- Every query must contains the same columns, expressions or aggregate function(but different columns don't need to be listed as the same order).
+- Column data types must be compatible: type do not have to be identical, but must be the types that the DBMS can be implicitly convert.
+- Union automatically removes duplicate rows from the query result set. If do need show duplicate rows, use `UNION ALL`  instead.
+
+### Sort combined query results
