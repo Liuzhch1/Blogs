@@ -663,3 +663,42 @@ WHERE vend_id IN (1001,1002);
 - Union automatically removes duplicate rows from the query result set. If do need show duplicate rows, use `UNION ALL`  instead.
 
 ### Sort combined query results
+When using `UNION`, only one `ORDER BY` clause can be used and it must appear after the last select statement.
+```MySQL
+SELECT vend_id, prod_id, prod_price
+FROM products
+WHERE prod_price <= 5
+UNION
+SELECT vend_id, prod_id, prod_price
+FROM products
+WHERE vend_id IN (1001,1002)
+ORDER BY vend_id, prod_price;
+```
+**Meaning:** Order the rows returned by union operation.
+
+## Full Text Search
+> Not all engines support full text search. `MyISAM` supports, but `InnoDB` doesn't.
+
+### Use full text search
+In order to perform full text search, the searched columns must be indexed and re-indexed as the data changes. After properly designing the table columns, MySQL will automatically perform all indexing and re-indexing.
+After indexing, using `Match()` and `Against()` with `SELECT` to search.
+
+#### enable full text search when creating table
+`CREATE TABLE` statement accepts a comma separated list of indexed columns.
+```MySQL
+CREATE TABLE productnotes
+(
+	note_id int NOT NULL AUTO_INCREMENT,
+	prod_id char(10) NOT NULL,
+	note_date datetime NOT NULL,
+	note_text text NULL,
+	PRIMARY KEY(note_id),
+	FULLTEXT(note_text)
+)ENGINE=MyISAM;
+```
+**Meaning:** Create a table that indexing column `note_text`.
+
+After definition, MySQL will automatically maintains the index. Update the index when adding, deleting or updating.
+
+> Don't use `FULLTEXT` when importing data. All data should imported first and then define `FULLTEXT`(and MySQL indexing). Otherwise it's takes many times to reindexing when importing data.
+
