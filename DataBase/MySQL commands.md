@@ -676,7 +676,7 @@ ORDER BY vend_id, prod_price;
 ```
 **Meaning:** Order the rows returned by union operation.
 
-## Full Text Search
+## Ch18 Full Text Search
 > Not all engines support full text search. `MyISAM` supports, but `InnoDB` doesn't.
 
 ### Use full text search
@@ -702,3 +702,45 @@ After definition, MySQL will automatically maintains the index. Update the index
 
 > Don't use `FULLTEXT` when importing data. All data should imported first and then define `FULLTEXT`(and MySQL indexing). Otherwise it's takes many times to reindexing when importing data.
 
+#### perform a full text search
+Using `Match()` to specify the columns want to search and using `Against()` to specify the search expression.
+```MySQL
+SELECT note_text
+FROM productnotes
+WHERE Match(note_text) Against('rabbit');
+```
+**Meaning:** Search columns `note_text`'s value where contains `'rabbit'`.
+
+> The result search by `Match()` and `Against()` has ranks. In the above example, if `rabbit` appeared in the 3-rd word in row1 and appeared in the 8-th word in row2, then row1 will returned above row2.
+> Rank is calculated by MySQL according to the number of words in a row, the number of unique words and total number of words in the entire index and the number of rows containing the word.
+> `LIKE` operation don't do ranking.
+
+#### use query extensions
+Above query do exactly search, while query extensions will return the row related to the result row(s).
+- First do normal full text search, find all row matches.
+- Then, MySQL check those rows and select some 'useful' words
+- Finally, do full text search and return rows contains those 'useful' words (and the original word).
+```MySQL
+SELECT note_text
+FROM productnotes
+WHERE Match(note_text) Against('anvils' WITH QUERY EXPANSION);
+```
+**Meaning:** It will return more rows then `...Against('anvils');`.
+
+#### boolean text search
+`boolean mode` contains:
+- words to match
+- word to exclude(whenever a line contains this word, then won't return this line even it contains words to match)
+- ranking tips(some words are more important than other word)
+- expression group
+```MySQL
+SELECT note_text
+FROM productnotes
+WHERE Match(note_text) Against('heavy -rope*' IN BOOLEAN MODE);
+```
+**Meaning:** Match `'heavy'` but does not contain any word that begin with `rope`.
+
+**Full text search Boolean operator:**
+`+`: contains and must exists
+`-`: excludes and must not exists
+`>`:
