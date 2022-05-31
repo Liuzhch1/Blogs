@@ -741,6 +741,36 @@ WHERE Match(note_text) Against('heavy -rope*' IN BOOLEAN MODE);
 **Meaning:** Match `'heavy'` but does not contain any word that begin with `rope`.
 
 **Full text search Boolean operator:**
-`+`: contains and must exists
+`+`: conclude and must exists
 `-`: excludes and must not exists
-`>`:
+`>`: conclude and increase rank
+`<`: conclude and decrease rank
+`()`: make phrases into subexpressions(allow those subexpressions to be included, excluded, etc)
+`~`: cancel the sorting value of a word 
+`*`: wildcard at ending
+`""`: define a phrase(differ from single word, it match the whole phrase)
+```MySQL
+WHERE Match (note_text) Against('rabbit bait' IN BOOLEAN MODE)；
+```
+**Meaning:** contain `'rabbit'` or `'bait'`. At least one.
+
+```MySQL
+WHERE Match (note_text) Against('+rabbit +bait' IN BOOLEAN MODE)；
+```
+**Meaning:** contain both `'rabbit'` and `'bait'`.
+
+```MySQL
+WHERE Match (note_text) Against('"rabbit bait"' IN BOOLEAN MODE)
+```
+**Meaning:** contain the whole phrase `"rabbit bait"`.
+
+```MySQL
+WHERE Match (note_text) Against('>rabbit <carrot' IN BOOLEAN MODE)；
+```
+**Meaning:** increase the `'rabbit'` rank and decrease `'carrot'` rank.
+
+```MySQL
+WHERE Match (note_text) Against('+safe +(<combination)'IN BOOLEAN MODE)；
+```
+**Meaning:** search `'safe'` and `'combination'`, decrease the `'combination'`'s rank.
+
