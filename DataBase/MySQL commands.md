@@ -774,3 +774,46 @@ WHERE Match (note_text) Against('+safe +(<combination)'IN BOOLEAN MODE)；
 ```
 **Meaning:** search `'safe'` and `'combination'`, decrease the `'combination'`'s rank.
 
+> There are some `stopword` in MySQL, which means they will be ignored when full text searching. It can be override.
+> 
+> If a word appear more than 50%, it will be ignored unless using `IN BOOLEAN MODE`. So in a two rows or one row table, full text search won't return results(reached 50% or not appear).
+> 
+> Ignore the single quote `'`, so `don't` indexed as `dont`
+> 
+> Language without separators(Chinese, Japanese, etc) cannot properly return the full text search result.
+
+## Ch19 Insert Data
+Using `INSERT` clause to insert data into table.
+
+### Insert a complete row
+```MySQL
+INSERT INTO Customers
+VALUES(NULL,
+	   'Pep E. Lapew',
+	   'Los Angles',
+	   'USA',
+	   NULL);
+```
+**Meaning:** Insert a new row with all column values specified. If some columns has no value, using `NULL`. The first column `cust_id` is `NULL` because that column will increase automatically by MySQL when inserting new row.
+
+Above usage is easy but not suggested. The safer is:
+```MySQL
+INSERT INTO customers(
+	cust_name,
+	cust_city,
+	cust_country,
+	cust_email)
+VALUES(
+	'Pep E. Lapew',
+	'Los Angles',
+	'USA',
+	NULL);
+```
+**Meaning:** Specify the each column's value precisely. **Advantage:** Even the table struct changes(column exchanges, etc.), this `INSERT` work well. And not all columns need to specify(so default to `NULL`).
+
+> To omit some columns, those columns must allow `NULL` value. And give default value when definition.
+
+`INSERT` is usually slow, to handle `SELECT` first, using `LOW_PRIORITY`
+```MySQL
+INSERT LOW PRIORITY INTO
+```
