@@ -817,3 +817,51 @@ VALUES(
 ```MySQL
 INSERT LOW PRIORITY INTO
 ```
+
+### Insert multiple rows
+We can use multiple `INSERT INTO`, each insert operation ends with a `;`. Or we can use a tuple in which contains multiple data sets as long as the column names and order are the same:
+```MySQL
+INSERT INTO customers(
+	  cust_name,
+	  cust_address,
+	  cust_city,
+	  cust_state,
+	  cust_country)
+VALUES(
+	  'Pep E. LaPew',
+	  '100 Main Street',
+	  'Los Angeles',
+	  'CA',
+	  'USA'
+),
+	  (
+	  'M. Martian',
+	  '42 Galaxy Way',
+	  'New York',
+	  'NY',
+	  'USA'
+);
+```
+**Meaning:** Insert multiple rows with multiple data sets. Each set of values is enclosed by a pair of parentheses and separated by commas. Finally ends with a semicolon.
+
+### Insert retrieved data
+We can also insert data that is from `SELECT` operation.
+```MySQL
+INSERT INTO customers(
+	cust_contact,
+	cust_email,
+	cust_name,
+	cust_address,
+	cust_city)
+SELECT cust_contact,
+	cust_email,
+	cust_name,
+	cust_address,
+	cust_city
+FROM custnew;
+```
+**Meaning:** We insert data that comes from `custnew` table.
+
+> ATTENTION: when inserting from another table, if the primary key(eg. `cust_id`) is repeated, the subsequent insert operation will fail.
+> Either ensure that the primary key value of the inserted row is not duplicate, or ignore it directly and let MySQL generate new values by itself. Like the example above.
+
