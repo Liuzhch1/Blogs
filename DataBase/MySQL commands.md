@@ -865,3 +865,30 @@ FROM custnew;
 > ATTENTION: when inserting from another table, if the primary key(eg. `cust_id`) is repeated, the subsequent insert operation will fail.
 > Either ensure that the primary key value of the inserted row is not duplicate, or ignore it directly and let MySQL generate new values by itself. Like the example above.
 
+## Ch 20 Update and Delete Data
+Using `UPDATE` and `DELETE` clause to manipulate table data.
+
+### Update data
+`UPDATE` is formed with 3 parts:
+- table to be updated
+- column names and their new values
+- Determine the filter criteria for the row to update(`WHERE`)
+```MySQL
+UPDATE customers
+SET cust_email = 'elmer@fudd.com'
+WHERE cust_id = 10005;
+```
+**Meaning:** set the `cust_email` value of `cust_id=10005` to `'elmer@fudd.com'` in the `customers` table.
+
+To set more rows:
+```MySQL
+UPDATE customers
+SET cust_name = 'The fudds',
+	cust_email = 'elmer@fudd.com'
+WHERE cust_id = 10005;
+```
+
+> We can also use subqueries to update more data.
+
+> If `UPDATE` encounters an error, all `UPDATE` operation will be canceled and data will be restored to the original.
+> We can use `IGNORE` to ignore error. Continue update. `UPDATE IGNORE customers...`
