@@ -892,3 +892,26 @@ WHERE cust_id = 10005;
 
 > If `UPDATE` encounters an error, all `UPDATE` operation will be canceled and data will be restored to the original.
 > We can use `IGNORE` to ignore error. Continue update. `UPDATE IGNORE customers...`
+
+Set a column value to `NULL` to delete the value.
+```MySQL
+UPDATE customers
+SET cust_email = NULL
+WHERE cust_id = 10005;
+```
+
+### Delete data
+Delete a row:
+```MySQL
+DELETE FROM customers
+WHERE cust_id = 10006;
+```
+**Meaning:** Delete that row.
+> Remember to use `WHERE` clause, otherwise all rows will be deleted.
+
+If want to delete all rows from a table, use `TRUNCATE TABLE`, which is more fast.
+
+#### guidelines for updates and deletions
+1. Never use an `UPDATE` or `DELETE` clause without a `WHERE` clause unless you do want to make changes to all rows.
+2. Ensure every table has a primary key.
+3. Before using 
