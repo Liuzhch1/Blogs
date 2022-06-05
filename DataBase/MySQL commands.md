@@ -914,4 +914,23 @@ If want to delete all rows from a table, use `TRUNCATE TABLE`, which is more fas
 #### guidelines for updates and deletions
 1. Never use an `UPDATE` or `DELETE` clause without a `WHERE` clause unless you do want to make changes to all rows.
 2. Ensure every table has a primary key.
-3. Before using 
+3. Before using `UPDATE` or `DELETE`, using `SELECT` first so that you can ensure that the `WHERE` clause do what exactly what you want.
+
+> ATTENTION! There is NO UNDO in MySQL! Use `DELETE` and `UPDATE`  carefully.
+
+## Ch 21 Create and Manipulate Tables
+### Table creation basis
+To use `CREATE TABLE`, the following information must be given:
+- The new table's name, after `CREATE TABLE`.
+- Names and definitions of table columns, separated by commas.
+
+```MySQL
+CREATE TABLE customers
+(
+	cust_id int NOT NULL AUTO_INCREMENT,
+	cust_name char(50) NOT NULL,
+	cust_address char(50) NULL,
+	PRIMARY KEY (cust_id)
+) ENGINE = InnoDB;
+```
+**Meaning:** Create a new table named `customers` which has three columns, they are: `cust_id, cust_name, cust_address`. `cust_id` will self increases, and set it as the primary key.
