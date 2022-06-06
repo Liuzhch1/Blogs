@@ -919,7 +919,8 @@ If want to delete all rows from a table, use `TRUNCATE TABLE`, which is more fas
 > ATTENTION! There is NO UNDO in MySQL! Use `DELETE` and `UPDATE`  carefully.
 
 ## Ch 21 Create and Manipulate Tables
-### Table creation basis
+### Create A Table
+#### table creation basis
 To use `CREATE TABLE`, the following information must be given:
 - The new table's name, after `CREATE TABLE`.
 - Names and definitions of table columns, separated by commas.
@@ -934,3 +935,45 @@ CREATE TABLE customers
 ) ENGINE = InnoDB;
 ```
 **Meaning:** Create a new table named `customers` which has three columns, they are: `cust_id, cust_name, cust_address`. `cust_id` will self increases, and set it as the primary key.
+
+#### using NULL
+A column that allow `NULL` value is allowed insert a row without giving its value. While `NOT NULL` don't.
+```MySQL
+CREATE TABLE vendors
+(
+	vend_id int NOT NULL AUTO_INCREMENT,
+	vend_name char(50) NOT NULL,
+	vend_address char(50) NULL,
+	vend_city char(50) NULL,
+	PRIMARY KEY (vend_id)
+) ENGINE = InnoDB;
+```
+**Meaning:** `vend_id` and `vend_name` is required, so set as `NOT NULL`.
+
+> `NULL` is not a value, while `''` is a value even it's empty.
+
+#### re-introduction to primary key
+The primary key must be unique. That is every rows in the table must have unique primary key.
+If using single column as primary key, its value must be unique. If multiple columns are used, the combined values of those columns must be unique.
+```MySQL
+	PRIMARY KEY (order_num, order_item)
+```
+
+#### AUTO_INCREMENT
+Every table only allow one `AUTO_INCREMENT` column. And that column must be indexed(eg. use it as primary key).
+
+> use `last_insert_id()` to get last inserted `AUTO_INCREMENT` value.
+
+#### specify default values
+Using `DEFAULT` to specify default values.
+```MySQL
+	quantity int NOT NULL DEFAULT 1,
+```
+**Meaning:** If `quantity` is not given, set it default to 1.
+
+> MySQL only allow constant as default value, while most DBMS allow function values.
+
+#### engine type
+Different engines have different features and characteristic, choosing the right engine to obtain good functions and flexibility.
+> `InnoDB` is a reliable transaction processing engine while it doesn't support full-text search.
+> 
