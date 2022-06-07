@@ -975,5 +975,15 @@ Using `DEFAULT` to specify default values.
 
 #### engine type
 Different engines have different features and characteristic, choosing the right engine to obtain good functions and flexibility.
+Using `ENGINE=...`:
 > `InnoDB` is a reliable transaction processing engine while it doesn't support full-text search.
-> 
+> `MEMORY` store data in memory, so it's quick(especially suitable for temporary tables)
+> `MyISAM` is very high-performance engine that supports full-text search, but doesn't support transaction processing.
+
+### Alter tables
+To alter table, use `ALTER TABLE` clause. But ideally, when data is stored in a table, the table should not be updated. So it takes a lot of time to consider in the table design progress in order that no major changes will be made to the table later.
+```MySQL
+ALTER TABLE vendors
+ADD vend_phone CHAR(20);
+```
+**Meaning:** Add a column called `vend_phone`, which data type is `CHAR(20)`.
