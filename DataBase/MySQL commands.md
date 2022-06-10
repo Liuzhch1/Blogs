@@ -24,7 +24,7 @@ LIMIT 2;
 	Show the lists inside a table.
 
 
-## Data Retrieval
+## Ch 4 Data Retrieval
 **Objective:** Using `SELECT` command to retrieve one or more data columns from a table.
 
 Using `SELECT` should give two piece of information: 1. what you want to choose. 2. where to choose from.
@@ -100,7 +100,7 @@ SELECT products.prod_name
 FROM mydatabase.products;
 ```
 
-## Sort and Retrieve Data
+## Ch 5 Sort and Retrieve Data
 **Objective:** Using `ORDER BY` clause of the `SELECT` command to sort the retrieved data as needed.
 
 ### Sort data
@@ -155,7 +155,7 @@ LIMIT 1;
 
 > Must put `ORDER BY` after `FROM`, and put `LIMIT` after `ORDER BY`.
 
-## Filter Data
+## Ch 6 Filter Data
 **Objective:** Use `WHERE` clause of the `SELECT` command to specify search criteria.
 
 ### Using WHERE clause
@@ -177,7 +177,7 @@ Use `NULL` to filter no value: `WHERE prod_name IS NULL`.
 
 > Filter will ignore `NULL` if the criteria is not `IS NULL`. Because database don't know if `NULL` data fit, so just ignore them.
 
-## Data Filtering
+## Ch 7 Data Filtering
 High level filter criteria with `WHERE`.  And `NOT` and `IN`.
 
 ### Combined WHERE clause
@@ -199,7 +199,7 @@ Use `NOT` to negate any condition following it.
 WHERE prod_price NOT IN (20,100);
 ```
 
-## Filter With Wildcards
+## Ch 8 Filter With Wildcards
 Use `LIKE` operation to search.
 > ***wildcard:*** A special character used to match a portion of a value
 > ***search pattern:*** Search criteria consist of literals, wildcards or their combination.
@@ -221,7 +221,7 @@ Similar to `%`, but `_` only match exactly one character.
 
 > Wildcard is time time-consuming. Use them only when do needed.
 
-## Search With Regular Expressions
+## Ch 9 Search With Regular Expressions
 **Objective:** Using `WHERE` with regular expressions to satisfy complex filter.
 
 ### Using MySQL regular expressions
@@ -321,7 +321,7 @@ WHERE prod_name REGEXP '^[0-9]';
 > Test your regular expression: `SELECT 'hello' REGEXP '[0-9]'`, which means match digit in string 'hello', it will return false.
 > This `REGEXP` test only return 1 for success and 0 for failed.
 
-## Create Calculated Field
+## Ch 10 Create Calculated Field
 **Objective:** Return the field in specified format. Not stored in the database.
 
 ### Concatenate field
@@ -354,7 +354,7 @@ SELECT Concat(.......) AS vend_title
 > `SELECT Trim(' bag ')` return `'bag'`. 
 > `SELECT Now()` return current date and time.
 
-## Data Processing Functions
+## Ch 11 Data Processing Functions
 > Functions in SQL is not quilt portable. Which mean some function works in MySQL won't work on other `DBMS`. So write comments for function you used.
 
 ### Text processing function
@@ -423,7 +423,7 @@ WHERE Year(order_date)=2022 AND Month(order_date)=2;
 `Sqrt()`
 `Tan()`
 
-## Summary Data
+## Ch 12 Summary Data
 MySQL can summary data to retrieve them. Like:
 - Number of rows in the table (or number of rows that meet a condition)
 - Sum of the row groups in the table.
@@ -473,7 +473,7 @@ SELECT AVG(DISTINCT prod_price) AS avg_prive
 ```
 **Meaning:** Return the average price of price different product.
 
-## Grouping Data
+## Ch 13 Grouping Data
 Using `GROUP BY` and `HAVING` clause to group a subset of a table.
 
 ### Create group
@@ -519,7 +519,7 @@ ORDER BY
 LIMIT
 ```
 
-## Use Subquery
+## Ch 14 Use Subquery
 Subquery is the queries nested in other queries.
 ```MySQL
 SELECT DISTINCT cust_id
@@ -545,7 +545,7 @@ ORDER BY cust_name;
 ```
 **Meaning:** The `orders` is a calculated fields, the content inside parentheses means select rows from `orders` table where the `cust_id` matches `cust_id` in the `customers` table. Which uses [[#Fully qualified table names]].
 
-## Join Table
+## Ch 15 Join Table
 > **foreign key:** A column in a table, which contains the primary key value of another table and defines the relationship between two table.
 
 ### Create join
@@ -585,7 +585,7 @@ AND order_num=2004;
 ```
 **Meaning:** Using `AND` in `WHERE` to join multiple tables.
 
-## Create Advanced Join
+## Ch 16 Create Advanced Join
 ### Use table alias
 There are two reasons for SQL allows aliasing of table names.
 - Shorten SQL statements
@@ -644,7 +644,7 @@ GROUP BY customers.cust_id;
 ```
 **Meaning:** Using left outer join to connect two tables and then group the rows by customers, count each customers `order_num` as `num_ord`.
 
-## Combined Query
+## Ch 17 Combined Query
 We can use `UNION` to execute multiple queries(`SELECT`), and return result as a single query result.
 ```MySQL
 SELECT vend_id, prod_id, prod_price
@@ -987,3 +987,57 @@ ALTER TABLE vendors
 ADD vend_phone CHAR(20);
 ```
 **Meaning:** Add a column called `vend_phone`, which data type is `CHAR(20)`.
+
+```MySQL
+ALTER TABLE vendors
+DROP COLUMN vend_phone;
+```
+**Meaning:** Delete the `vend_phone` column.
+
+> Be careful with `ALTER TABLE`! There is no undo! Make a complete backup before make changes.
+
+### Delete table
+```MySQL
+DROP TABLE customers;
+```
+**Meaning:** Delete the whole `customers` table.
+
+> There is no undo or confirm for delete table.
+
+### Rename table
+```MySQL
+RENAME TABLE customers2 TO customers;
+```
+**Meaning:** Rename the table `customers2` to `customers`.
+
+Do multiple renaming:
+```MySQL:
+RENAME TABLE backup_customers TO customers,
+			 backup_vendors TO vendors,
+			 backup_products TO products;
+```
+
+## Ch 22 Using Views
+### What is Views
+In Ch 15, when select data from "multiple joined table", we use sentences like:
+```MySQL
+...
+FROM orderitems, products, vendors
+WHERE products.vend_id=vendors.vend_id
+AND orderitems.prod_id=products.prod_id
+...
+```
+We create a joined table which is joined from three tables. What if we want to use this joined table later? Rewrite these three lines? No! Complex and error prone. A **View** is used to represent those joined tables. Use another name for this joined table(When I say joined table, they are actually not joined, no new table are created, they just look like joined. Ref Ch15). So we can easily use it later.
+
+For example, after pack above joined table as `productcustomers`.
+```MySQL
+SELECT cust_name, cust_contact
+FROM productcustomers
+WHERE prod_id = 'TNT2';
+```
+
+As a view, `productcustomers` doesn't contain any columns or data, it just a SQL query. Same as above three lines.
+
+#### why view?
+- Reuse SQL statements
+- 
