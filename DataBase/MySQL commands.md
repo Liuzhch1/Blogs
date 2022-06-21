@@ -1040,4 +1040,85 @@ As a view, `productcustomers` doesn't contain any columns or data, it just a SQL
 
 #### why view?
 - Reuse SQL statements
+- Use complex SQL operation result without knowing its query details
+- Protect data. Users can be granted access to specific parts of a table instead of the entire table.
+- 'Change' how a table looks like. Change data format and presentation.
+
+> View simply viewing data, it doesn't contains data.
+
+#### rules and restrictions for views
+- Unique name.(Differ from other views and tables)
+- To create a view, may need sufficient access rights
+- Views can be nested, so a view can retrieve data from other views
+- `ORDER BY` can be used in view, if there are `ORDER BY` in `SELECT` of the views, the `ORDER BY` in the view will be overwritten
+
+### Using views
+- Create views with `CREATE VIEW`
+- Use `SHOW CREATE VIEW viewname` to look that statement that created the view.
+- Use `DROP VIEW viewname` to delete views
+- When updating a view, we can use `DROP` first and then `CREATE`. We can also use `CREATE OR REPLACE VIEW`.
+
+#### simplify complex joins with views
+Join usually are complex, we can use view to simplify it.
+```MySQL
+CREATE VIEW productcustomers AS
+SELECT cust_name, cust_contact, prod_id
+FROM customers, orders, orderitems
+WHERE customers.cust_id = orders.cust_id
+	AND orderitems.order_num=orders.order_num;
+```
+**Meaning:** Creating a view which joins three tables.
+
+#### reformat retrieved data with view
+In ch 10, we learned how to reformat the `SELECT`ed data. E.g.
+```MySQL
+SELECT Concat(RTrim(vend_name),'(',RTrim(vend_country),')')
+	AS vend_title
+FROM vendors
+ORDER BY vend_name;
+```
+We can add a line above it to construct a view having that format.
+```MySQL
+CREATE VIEW vendorlocations AS
+....
+```
+
+#### filter unwanted data from view
+Use `WHERE` to filter data.
+```MySQL
+CREATE VIEW customeremaillists AS
+SELECT cust_id, cust_name, cust_email
+FROM customers
+WHERE cust_email IS NOT NULL;
+```
+> The `WHERE` clause in view and the `WHERE` clause passed to view will automatically combine.
+
+#### use calculated filed with view
+```MySQL
+CREATE VIEW orderitermsexpanded AS
+SELECT prod_id,
+	   quantity,
+	   item_price,
+	   quantity*item_price AS expanded_price
+FROM orderitems;
+```
+
+#### update view
+Update view means do update to original tables(where the data comes from). Not all view can be updated. View contains following operation can't be updated.
+- Grouping(`GROUP BY` and `HAVING`)
+- Union
+- Subquery
+- And
+- Aggregate functions
+- DISTINCT
+- Exported calculated filed
+
+> Views are usually used for retrieve data.
+
+
+## Ch 23 Using Stored Procedures
+### What is stored procedures?
+Some situations may be too complicated so that we need many sentences to process, and the order are not fixed. A stored Procedures is a collection of one or more MySQL statements saved for future use. They can be considered batch files, but not limited to.
+
+### Why using stored procedure?
 - 
