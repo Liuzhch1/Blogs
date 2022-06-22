@@ -4,12 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "2d0cdf61f8aeb1ee",
+        "id": "b2afb7ffbe0d74f1",
         "type": "leaf",
         "state": {
           "type": "markdown",
           "state": {
-            "file": "LeetCode/76. Minimum Window Substring.md",
+            "file": "DataBase/MySQL commands.md",
             "mode": "source",
             "source": false
           }
@@ -40,7 +40,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "github",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -53,7 +53,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 325.5,
+    "collapsed": true
   },
   "right": {
     "id": "646ebc33379ae857",
@@ -69,7 +70,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "LeetCode/76. Minimum Window Substring.md",
+                "file": "DataBase/MySQL commands.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -79,17 +80,36 @@
                 "unlinkedCollapsed": true
               }
             }
+          },
+          {
+            "id": "8b454a2e2961e989",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "DataBase/MySQL commands.md"
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
     "width": 300,
     "collapsed": true
   },
-  "active": "2d0cdf61f8aeb1ee",
+  "active": "b2afb7ffbe0d74f1",
   "lastOpenFiles": [
-    "LeetCode/76. Minimum Window Substring.md",
-    "随笔/Ubuntu下交换Alt和Ctrl (适用于任何按键修改).md"
+    "DataBase/MySQL commands.md",
+    "Algorithms and Data Structures/AlgDataStru_resources/Pasted image 20220621223401.png",
+    "LeetCode/155. Min Stack with No extra space-Store as difference.md",
+    "Algorithms and Data Structures/Stack.md",
+    "Algorithms and Data Structures/Greedy.md",
+    "Algorithms and Data Structures/Queue.md",
+    "Algorithms and Data Structures/Disjoint Sets.md",
+    "Java/Java基础.md",
+    "MakeWheels/RingBuffer.md",
+    "LeetCode/416. Partition Equal Subset Sum.md"
   ]
 }
