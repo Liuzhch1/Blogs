@@ -18,6 +18,8 @@ This is called ***Reverse-Polish*** notation after the mathematician Jan Łukasi
 Its advantage is that no ambiguity and no brackets are needed. And it's the same process used by a computer to perform computations:
 > operands must be loaded into register before operations can be performed on them
 
+*LeetCode:* [150. Evaluate Reverse Polish Notation](https://leetcode.cn/problems/evaluate-reverse-polish-notation/)
+
 The easiest way to parse reverse-Polish notation is to use an operand ***stack***. So what is a stack?
 
 ### What is a stack?
@@ -176,3 +178,11 @@ Most parsing uses stacks.
 Examples includes:
 - Matching tags in XHTML
 - In C++, matching parentheses $\textbf{(...)}$, brackets $\textbf{[...]}$ and braces $\textbf{\{...\}}$
+
+# Exercise Problems
+
+## Quick Exercises
+[32. Longest Valid Parentheses](https://leetcode.cn/problems/longest-valid-parentheses/)
+[42. Trapping Rain Water](https://leetcode.cn/problems/trapping-rain-water/)
+[84. Largest Rectangle in Histogram](https://leetcode.cn/problems/largest-rectangle-in-histogram/)
+[155. Min Stack](https://leetcode.cn/problems/min-stack/)
